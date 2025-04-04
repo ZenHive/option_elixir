@@ -1,21 +1,16 @@
 # Option
 
-**TODO: Add description**
+An Option type implementation for Elixir, inspired by Rust's Option type.  
+It is typed as `nil | t()` so that is may interact with idiomatic Elixir code without issue
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `option` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `option` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:option, "~> 0.1.0"}
+    {:option, git: "git@github.com:ZenHive/option_elixir.git", tag: "v0.1.0"},
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/option>.
-
