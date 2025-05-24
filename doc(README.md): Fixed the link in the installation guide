@@ -10,7 +10,7 @@ The package can be installed by adding `option` to your list of dependencies in 
 ```elixir
 def deps do
   [
-    {:option, git: "git@github.com:ZenHive/option_elixir.git", tag: "v0.1.0"},
+    {:option, git: "https://github.com/ZenHive/option_elixir.git", tag: "v0.1.0"},
   ]
 end
 ```
