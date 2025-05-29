@@ -35,6 +35,23 @@ defmodule Option do
   def map_or(opt, _default, f), do: f.(opt)
 
   @doc """
+  Transforms on option into a `{:ok, inner()} | {:error, any()}` tuple
+
+  Arguments passed to ok_or are eagerly evaluated; if you are passing the result of a function
+  call, it is recommended to use ok_or_else, which is lazily evaluated.
+
+  ## Examples
+      iex> Option.ok_or(42, :not_used_since_option_isnt_nil)
+      {:ok, 42}
+
+      iex> Option.ok_or(nil, :this_is_returned_since_option_is_nil)
+      {:error, :this_is_returned_since_option_is_nil}
+  """
+  @spec ok_or(t(inner), default :: any()) :: {:ok, inner()} | {:error, any()}
+  def ok_or(nil, default), do: {:error, default}
+  def ok_or(some, _), do: {:ok, some}
+
+  @doc """
   Maps an Option.t(inner) to new_inner by applying a function to a contained value
   (if Some) or computes the default value from the given function (if nil).
 
