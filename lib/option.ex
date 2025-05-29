@@ -2,8 +2,6 @@ defmodule Option do
   @type inner :: any()
   @type new_inner :: any()
 
-  @type t(inner) :: inner | nil
-
   @doc """
   Maps an Option.t(inner) to Option.t(new_inner) by applying a function to a contained value
   (if Some) or returns nil (if nil).
@@ -14,7 +12,7 @@ defmodule Option do
       iex> Option.map(nil, &String.length/1)
       nil
   """
-  @spec map(t(inner), (inner -> new_inner)) :: t(new_inner)
+  @spec map(inner | nil, (inner -> new_inner)) :: new_inner | nil
   def map(nil, _f), do: nil
   def map(opt, f), do: f.(opt)
 
@@ -30,7 +28,7 @@ defmodule Option do
       iex> Option.map_or(nil, "default", &String.length/1)
       "default"
   """
-  @spec map_or(t(inner), new_inner, (inner -> new_inner)) :: new_inner
+  @spec map_or(inner | nil, new_inner, (inner -> new_inner)) :: new_inner
   def map_or(nil, default, _f), do: default
   def map_or(opt, _default, f), do: f.(opt)
 
@@ -47,7 +45,7 @@ defmodule Option do
       iex> Option.ok_or(nil, :this_is_returned_since_option_is_nil)
       {:error, :this_is_returned_since_option_is_nil}
   """
-  @spec ok_or(t(inner), default :: any()) :: {:ok, inner()} | {:error, any()}
+  @spec ok_or(inner | nil, default :: any()) :: {:ok, inner()} | {:error, any()}
   def ok_or(nil, default), do: {:error, default}
   def ok_or(some, _), do: {:ok, some}
 
@@ -61,7 +59,7 @@ defmodule Option do
       iex> Option.ok_or_else(nil, fn -> :this_is_returned_since_option_is_nil end)
       {:error, :this_is_returned_since_option_is_nil}
   """
-  @spec ok_or_else(t(inner), default :: (-> any())) :: {:ok, inner()} | {:error, any()}
+  @spec ok_or_else(inner | nil, default :: (-> any())) :: {:ok, inner()} | {:error, any()}
   def ok_or_else(nil, default), do: {:error, default.()}
   def ok_or_else(some, _), do: {:ok, some}
 
@@ -75,7 +73,7 @@ defmodule Option do
       iex> Option.map_or_else(nil, fn -> "default" end, &String.length/1)
       "default"
   """
-  @spec map_or_else(t(inner), (-> new_inner), (inner -> new_inner)) :: new_inner
+  @spec map_or_else(inner | nil, (-> new_inner), (inner -> new_inner)) :: new_inner
   def map_or_else(nil, default_f, _f), do: default_f.()
   def map_or_else(opt, _default_f, f), do: f.(opt)
 
@@ -88,7 +86,7 @@ defmodule Option do
       iex> Option.unwrap!(nil)
       ** (ArgumentError) Option.unwrap! called on nil
   """
-  @spec unwrap!(t(inner)) :: inner
+  @spec unwrap!(inner | nil) :: inner
   def unwrap!(nil), do: raise(ArgumentError, "Option.unwrap! called on nil")
   def unwrap!(opt), do: opt
 
@@ -103,7 +101,7 @@ defmodule Option do
       iex> Option.unwrap_or(nil, "default")
       "default"
   """
-  @spec unwrap_or(t(inner), inner) :: inner
+  @spec unwrap_or(inner | nil, inner) :: inner
   def unwrap_or(opt, default), do: opt || default
 
   @doc """
@@ -115,6 +113,6 @@ defmodule Option do
       iex> Option.unwrap_or_else(nil, fn -> "default" end)
       "default"
   """
-  @spec unwrap_or_else(t(inner), (-> inner)) :: inner
+  @spec unwrap_or_else(inner | nil, (-> inner)) :: inner
   def unwrap_or_else(value, f), do: value || f.()
 end
