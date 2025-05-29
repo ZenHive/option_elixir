@@ -52,6 +52,20 @@ defmodule Option do
   def ok_or(some, _), do: {:ok, some}
 
   @doc """
+  Transforms on option into an `{:ok, inner()} | {:error, any()}` tuple
+
+  ## Examples
+      iex> Option.ok_or_else(42, fn -> :not_used_since_option_isnt_nil end)
+      {:ok, 42}
+
+      iex> Option.ok_or_else(nil, fn -> :this_is_returned_since_option_is_nil end)
+      {:error, :this_is_returned_since_option_is_nil}
+  """
+  @spec ok_or_else(t(inner), default :: (-> any())) :: {:ok, inner()} | {:error, any()}
+  def ok_or_else(nil, default), do: {:error, default.()}
+  def ok_or_else(some, _), do: {:ok, some}
+
+  @doc """
   Maps an Option.t(inner) to new_inner by applying a function to a contained value
   (if Some) or computes the default value from the given function (if nil).
 
